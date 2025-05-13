@@ -14,5 +14,9 @@ int main()
     inputs.push_back(input);
     at::Tensor output = model.forward(inputs).toTensor();
     ::c10::cuda::CUDACachingAllocator::get()->emptyCache();
+    /*! The following line will cause a link error like:
+        LINK : fatal error LNK1194: 无法延迟加载“torch_cpu.dll”，原因在于数据符号“"__declspec(dllimport) struct at::indexing::EllipsisIndexType const at::indexing::Ellipsis" (__imp_?Ellipsis@indexing@at@@3UEllipsisIndexType@12@B)”的导入；链接时不使用 /DELAYLOAD:torch_cpu.dll 
+    */
+    std::cout << torch::indexing::Ellipsis;
     return 0;
 }
